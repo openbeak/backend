@@ -1,8 +1,8 @@
+from django.db.models import Avg
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
 from .models import *
 from .serializers import *
 
@@ -15,8 +15,8 @@ import logging
 @api_view(['GET'])
 def TotalProblems_list(request):
     logging.error("totalProblems GET method")
-    queryset = Total_problems.objects.all()
-    serializer = TotalProblemsSerializer(queryset, many=True)
+    queryset = AlgoReader.objects.all()
+    serializer = AlgoReaderSerializer(queryset, many=True)
     return Response(serializer.data)
 
 
@@ -38,8 +38,12 @@ def getSolvedProblems(request, user_id):
     for num in problem_numbers:
         user_num.append(int(num.getText()))
 
-    queryset = Total_problems.objects.filter(pk__in=user_num)
-    serializer = TotalProblemsSerializer(queryset, many=True)
+    queryset = AlgoReader.objects.filter(pk__in=user_num)
+    serializer = AlgoReaderSerializer(queryset, many=True)
+
+    users_average_rate = AlgoReader.objects.filter(problemNum__in=problem_numbers).aggregate(Avg('price'))
+
+    AlgoReader.objects.filter()
 
     user_info = {
         "ranking": ranking,

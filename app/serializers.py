@@ -1,9 +1,7 @@
 from rest_framework import serializers
-
 from .models import *
 
-
-class TotalProblemsSerializer(serializers.ModelSerializer):
+class AlgoReaderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Total_problems
+        model = AlgoReader
         fields = '__all__'
