@@ -13,15 +13,17 @@ import logging
 @api_view(['GET'])
 def TotalProblems_list(request):
     logging.error("totalProblems GET method")
-    queryset = TotalProblems.objects.all()
+    queryset = Total_problems.objects.all()
     serializer = TotalProblemsSerializer(queryset, many = True)
     return Response(serializer.data)
 
-@api_veiw(['GET'])
+@api_view(['GET'])
 def getSolvedProblems(request):
+    #user_id = request.data
+    logging.error(request.data)
     user_id = "mor2222"
 
-    res = requests.get('https://www.acmicpc.net/user/'+user_id)
+    res = requests.get('https://www.acmicpc.net/user/' + user_id)
     soup = BeautifulSoup(res.content, 'html.parser')
 
     problem_numbers = soup.select('.problem_number')
@@ -29,11 +31,10 @@ def getSolvedProblems(request):
     user_num = []
 
     for num in problem_numbers:
-        user_num.append(numgetTexti())
-
-    logging.error(res)
-    logging.error(soup)
-    logging.error(problem_numbers)
+        user_num.append(int(num.getText()))
+    
+    queryset = Total_problems.objects.filter(pk__in=user_num)
+    serializer = TotalProblemsSerializer(queryset, many = True)
     logging.error(user_num)
-
+    return Response(serializer.data)
 # Create your views here.
