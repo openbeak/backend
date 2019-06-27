@@ -15,8 +15,8 @@ import logging
 @api_view(['GET'])
 def TotalProblems_list(request):
     logging.error("totalProblems GET method")
-    queryset = Total_problems.objects.all()
-    serializer = TotalProblemsSerializer(queryset, many=True)
+    queryset = Algoreader.objects.all()
+    serializer = AlgoreaderSerializer(queryset, many=True)
     return Response(serializer.data)
 
 
@@ -38,8 +38,8 @@ def getSolvedProblems(request, user_id):
     for num in problem_numbers:
         user_num.append(int(num.getText()))
 
-    queryset = Total_problems.objects.filter(pk__in=user_num)
-    serializer = TotalProblemsSerializer(queryset, many=True)
+    queryset = Algoreader.objects.filter(pk__in=user_num)
+    serializer = AlgoreaderSerializer(queryset, many=True)
 
     user_info = {
         "ranking": ranking,
