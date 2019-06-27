@@ -1,3 +1,4 @@
+import re
 from random import sample
 
 from django.db.models import Avg
@@ -25,8 +26,7 @@ def TotalProblems_list(request):
 
 @api_view(['GET'])
 def getSolvedProblems(request, user_id):
-    logging.error("getSolvedProblems GET method")
-
+    logging.info("getSolvedProblems GET method")
     res = requests.get('https://www.acmicpc.net/user/' + user_id)
     soup = BeautifulSoup(res.content, 'html.parser')
 
@@ -54,7 +54,8 @@ def getSolvedProblems(request, user_id):
     upper_bound = int(users_average_rate + 500)
 
     # bound_list = Algoreader.objects.filter(answerRate__range=(lower_bound, upper_bound))
-    bound_list = Algoreader.objects.filter(answerRate__lt=upper_bound, answerRate__gt=lower_bound).exclude(problemNum__in=user_num)
+    bound_list = Algoreader.objects.filter(answerRate__lt=upper_bound, answerRate__gt=lower_bound).exclude(
+        problemNum__in=user_num)
     bound_list_serializers = AlgoreaderSerializer(bound_list, many=True)
 
     top5_list = sample(bound_list_serializers.data, 5)
@@ -69,4 +70,40 @@ def getSolvedProblems(request, user_id):
 
     logging.info(user_num)
     return Response(user_info)
+
+
 # Create your views here.
+
+
+# api/fightProblems/<str:user_id_one>/<str:user_id_one>'
+
+@api_view(['GET'])
+def fightCode(request, user_id_one, user_id_two):
+    logging.info("fightCode GET method")
+    res = requests.get('https://www.acmicpc.net/vs/' + user_id_one + '/' + user_id_two)
+    soup = BeautifulSoup(res.content, 'html.parser')
+    source = soup.select('h3.panel-title')
+    num = []
+    for s in source:
+        tmp_string = s.getText().split('-')
+        tmp_string = tmp_string[1]
+        number = re.findall("\d+", tmp_string)
+        num.append(int(number[0]))
+
+    player_one = num[0] + num[1]
+    player_two = num[0] + num[2]
+
+
+    if player_one>player_two:
+        result = {
+            "winner": {"id": user_id_one, "problemCount": player_one},
+            "loser": {"id": user_id_two, "problemCount": player_two}
+        }
+    else:
+        result = {
+            "winner": {"id": user_id_two, "problemCount": player_two},
+            "loser": {"id": user_id_one, "problemCount": player_one}
+        }
+
+
+    return Response(result)
