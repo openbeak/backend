@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
-class AlgoReaderSerializer(serializers.ModelSerializer):
+class AlgoreaderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AlgoReader
+        model = Algoreader
         fields = '__all__'
