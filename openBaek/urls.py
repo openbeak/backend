@@ -22,5 +22,6 @@ import app.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/totalProblems', app.views.TotalProblems_list, name = "totalProblems"),
+    path('api/totalProblems/list', app.views.TotalProblems_list, name = "totalProblems/list"),
+    path('api/solvedProblems/list', app.views.getSolvedProblems, name = "solvedProblems/list"),
 ]
