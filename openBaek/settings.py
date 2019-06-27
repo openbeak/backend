@@ -25,7 +25,7 @@ SECRET_KEY = '+c+au-5(t73w+(__p0hqd5t1s7-pr4&j8%sjyy=_tp=v%(z$n!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.191.120.181']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'openBaek.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'PORT' : '3306',
+        'NAME' : 'sys',
+        'USER' : 'user2',
+        'PASSWORD' : '1234',
+        'HOST' : 'localhost'
     }
 }
 
@@ -103,9 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
