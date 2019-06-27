@@ -18,10 +18,8 @@ def TotalProblems_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getSolvedProblems(request):
-    #user_id = request.data
-    logging.error(request.data)
-    user_id = "mor2222"
+def getSolvedProblems(request, user_id):
+    logging.error("getSolvedProblems GET method")
 
     res = requests.get('https://www.acmicpc.net/user/' + user_id)
     soup = BeautifulSoup(res.content, 'html.parser')
