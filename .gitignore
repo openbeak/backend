@@ -1,1 +1,8 @@
 */settings.py
+.idea/*
+
+en/
+env/
+venv/
+
+/__pycache__/

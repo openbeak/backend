@@ -7,3 +7,4 @@ class Total_problems(models.Model):
     answerRate      = models.CharField(max_length = 10)
 
 # Create your models here.
+
