@@ -47,8 +47,8 @@ def getSolvedProblems(request, user_id):
     users_average_rate = Algoreader.objects.filter(problemNum__in=user_num).aggregate(Avg('answerRate'))[
         "answerRate__avg"]
 
-    print(type(users_average_rate))
-    print(users_average_rate)
+    # print(type(users_average_rate))
+    # print(users_average_rate)
 
     lower_bound = int(users_average_rate - 500)
     upper_bound = int(users_average_rate + 500)
@@ -58,7 +58,7 @@ def getSolvedProblems(request, user_id):
     bound_list_serializers = AlgoreaderSerializer(bound_list, many=True)
 
     top5_list = sample(bound_list_serializers.data, 5)
-    print(top5_list)
+    # print(top5_list)
 
     user_info = {
         "ranking": ranking,
