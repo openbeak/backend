@@ -31,7 +31,14 @@ def getSolvedProblems(request, user_id):
     soup = BeautifulSoup(res.content, 'html.parser')
 
     problem_numbers = soup.select('.problem_number')
-
+    if not problem_numbers:
+        mock_user_info = {
+            "ranking": "0",
+            "solving_count": "0",
+            "soling_problems": [],
+            "top5_list": []
+        }
+        return Response(mock_user_info)
     statics = soup.select('#statics tr td')
     ranking = statics[0].getText()
     solving_count = statics[1].getText()
@@ -83,6 +90,12 @@ def fightCode(request, user_id_one, user_id_two):
     res = requests.get('https://www.acmicpc.net/vs/' + user_id_one + '/' + user_id_two)
     soup = BeautifulSoup(res.content, 'html.parser')
     source = soup.select('h3.panel-title')
+    if not source:
+        except_result = {
+            "winner": {"id": "", "problemCount": ""},
+            "loser": {"id": "", "problemCount": ""}
+        }
+        return Response(except_result)
     num = []
     for s in source:
         tmp_string = s.getText().split('-')
@@ -93,8 +106,7 @@ def fightCode(request, user_id_one, user_id_two):
     player_one = num[0] + num[1]
     player_two = num[0] + num[2]
 
-
-    if player_one>player_two:
+    if player_one > player_two:
         result = {
             "winner": {"id": user_id_one, "problemCount": player_one},
             "loser": {"id": user_id_two, "problemCount": player_two}
@@ -104,6 +116,5 @@ def fightCode(request, user_id_one, user_id_two):
             "winner": {"id": user_id_two, "problemCount": player_two},
             "loser": {"id": user_id_one, "problemCount": player_one}
         }
-
 
     return Response(result)
